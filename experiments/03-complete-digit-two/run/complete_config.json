@@ -1,0 +1,23 @@
+{
+  "seed": 143,
+  "size": 32,
+  "diffusion_steps": 16,
+  "sft_steps": 700,
+  "rl_steps": 240,
+  "teacher_steps": 750,
+  "opd_steps": 160,
+  "student_width": 16,
+  "teacher_width": 32,
+  "device": "mps",
+  "torch": "2.15.0",
+  "source_twos": 4807,
+  "chosen_twos": 1909,
+  "acceptance_limits": {
+    "start": 0.26,
+    "turn": 0.28,
+    "tail": 0.3,
+    "foot": 0.9,
+    "connected": 0.94,
+    "contrast": 0.7
+  }
+}

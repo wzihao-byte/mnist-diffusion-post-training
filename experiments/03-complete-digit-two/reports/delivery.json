@@ -1,0 +1,176 @@
+{
+  "stage": "two_rl",
+  "requests": 24,
+  "delivered": 96,
+  "independently_read_as_2": 96,
+  "records": [
+    {
+      "prompt": "red 2 on the left",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the left",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the left",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the left",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the right",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the right",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the right",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "red 2 on the right",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the left",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the left",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the left",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the left",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the right",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the right",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the right",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "green 2 on the right",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the left",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the left",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the left",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the left",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the right",
+      "seed": 301,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the right",
+      "seed": 302,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the right",
+      "seed": 303,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    },
+    {
+      "prompt": "blue 2 on the right",
+      "seed": 304,
+      "delivered": 4,
+      "batch_candidates": 12,
+      "independently_read_as_2": 4
+    }
+  ]
+}
