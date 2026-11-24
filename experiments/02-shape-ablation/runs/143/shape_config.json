@@ -1,0 +1,12 @@
+{
+  "seed": 143,
+  "torch": "2.15.0",
+  "device": "mps",
+  "steps": 16,
+  "width": 16,
+  "teacher_width": 32,
+  "rl_steps": 360,
+  "base_steps": 850,
+  "sft_steps": 1050,
+  "teacher_steps": 1450
+}
