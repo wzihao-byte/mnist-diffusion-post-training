@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="基于公开 MNIST 的 SFT、RL 与 OPD 实验。从人工发现字形问题，到消融对照和笔画验收。">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>手写数字扩散模型后训练 · wzihao-byte</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#main"><span class="brand-mark" aria-hidden="true">2</span> Digit Diffusion</a>
+      <nav aria-label="项目导航">
+        <a href="#iteration">迭代记录</a>
+        <a href="#results">实验结果</a>
+        <a class="repo-link" href="https://github.com/wzihao-byte/mnist-diffusion-post-training">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div class="hero-copy">
+        <p class="eyebrow">MNIST <span aria-hidden="true">/</span> 生成模型后训练</p>
+        <h1 id="title">让生成的「2」<br>保住每一笔</h1>
+        <p class="lede">在公开 MNIST 上跑通 SFT、RL 和 OPD。通过人工审图发现字形问题，用消融实验验证改动，最后让程序检查左上起笔、左下转折和右下尾笔。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#results">查看前后对照</a>
+          <a class="button secondary" href="https://github.com/wzihao-byte/mnist-diffusion-post-training/tree/main/experiments/03-complete-digit-two">源码与权重 <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="credit">项目方向与评审 <a href="https://github.com/wzihao-byte">@wzihao-byte</a><span aria-hidden="true"> · </span>实现与实验 Codex 协作</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="assets/verified-twos.png" width="896" height="240" alt="六个通过笔画验收的绿色手写数字 2" fetchpriority="high">
+        <figcaption>最终交付样例 · 右侧绿色「2」</figcaption>
+      </figure>
+    </section>
+
+    <section class="headline-results" aria-label="重点实验结果">
+      <div><span class="metric">91.46<small>%</small></span><span class="metric-title">初版完整链路指令通过率</span><span class="metric-detail">SFT 基线为 83.89%</span></div>
+      <div><span class="metric">95.8<small>%</small></span><span class="metric-title">「0」直立通过率</span><span class="metric-detail">原链路为 47.6%</span></div>
+      <div><span class="metric">82.2<small>%</small></span><span class="metric-title">专项「2」严格通过率</span><span class="metric-detail">重抽前，旧 32×32 模型为 40.8%</span></div>
+    </section>
+
+    <section id="iteration" class="section" aria-labelledby="iteration-title">
+      <div class="section-header"><p class="eyebrow">项目推进</p><h2 id="iteration-title">从观察到可检验的改动</h2>
+        <p>每一轮都从实际生成图出发。由 @wzihao-byte 判断哪里出了问题、选定该测的改动，再与 Codex 协作实现并跑实验。</p></div>
+      <ol class="timeline">
+        <li>
+          <span class="step" aria-hidden="true">01</span>
+          <div><h3>先把后训练流程跑通</h3><p><strong>项目要求</strong> 用公开数据实际运行 SFT、RL 和 OPD，并展示各阶段的图。</p>
+            <p><strong>实验结果</strong> 用同一组提示和噪声比较检查点。三组训练种子中，SFT 为 83.89%，SFT → RL 为 91.01%，SFT → OPD 为 91.74%，三阶段完整链路为 91.46%。</p>
+            <a href="https://github.com/wzihao-byte/mnist-diffusion-post-training/tree/main/experiments/01-post-training">代码与三组种子结果 <span aria-hidden="true">↗</span></a></div>
+        </li>
+        <li>
+          <span class="step" aria-hidden="true">02</span>
+          <div><h3>指出「0」倾斜和「2」模糊，要求逐项验证</h3><p><strong>项目判断</strong> 通过率上升后，仍能从样图里看到倾斜和弱笔画。选定分辨率、困难样本、损失函数和奖励四项做对照。</p>
+            <p><strong>实验结果</strong> 低置信度难例增采样会让「2」更弱，前景加权会损伤其他数字。原链路追加半学习率的形状 RL 后，两个训练种子的「0」直立、「2」可读且笔画足量及其他数字通过率都提升。</p>
+            <a href="https://github.com/wzihao-byte/mnist-diffusion-post-training/tree/main/experiments/02-shape-ablation">消融数据与固定样图 <span aria-hidden="true">↗</span></a></div>
+        </li>
+        <li>
+          <span class="step" aria-hidden="true">03</span>
+          <div><h3>发现缺笔的位置，明确最后的验收条件</h3><p><strong>项目判断</strong> 「2」仍可能左侧不显示，或右下尾笔短缺。明确要求左右两端都清楚可见。</p>
+            <p><strong>实验结果</strong> 筛出 1,909 个完整的 MNIST「2」做专项训练。推理逐段检查左上起笔、左下转折和右下尾笔，必要时重抽。默认权重选用 SFT 与形状 RL 的结果。</p>
+            <a href="https://github.com/wzihao-byte/mnist-diffusion-post-training/tree/main/experiments/03-complete-digit-two">训练与验收代码 <span aria-hidden="true">↗</span></a></div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="results" class="section results" aria-labelledby="results-title">
+      <div class="section-header"><p class="eyebrow">实测结果</p><h2 id="results-title">把数字和样图放在一起看</h2></div>
+      <div class="tab-list" role="tablist" aria-label="查看实验阶段">
+        <button id="tab-stroke" type="button" role="tab" aria-controls="panel-stroke" aria-selected="true">补齐「2」的笔画</button>
+        <button id="tab-ablation" type="button" role="tab" aria-controls="panel-ablation" aria-selected="false" tabindex="-1">字形消融</button>
+        <button id="tab-baseline" type="button" role="tab" aria-controls="panel-baseline" aria-selected="false" tabindex="-1">初版后训练</button>
+      </div>
+      <noscript><p class="muted">各阶段结果按顺序显示。</p></noscript>
+      <div class="panel" id="panel-stroke" role="tabpanel" aria-labelledby="tab-stroke" tabindex="0">
+        <p>旧 32×32 与新模型在同一组提示与噪声下各生成 1,152 张。表里是重抽前的结果。</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">检查项</th><th scope="col">旧版</th><th scope="col">专项 SFT + 形状 RL</th></tr></thead>
+          <tbody><tr><th scope="row">左上起笔可见</th><td>72.6%</td><td class="highlight">98.5%</td></tr>
+          <tr><th scope="row">右下尾笔可见</th><td>87.8%</td><td class="highlight">97.8%</td></tr>
+          <tr><th scope="row">完整笔画与独立识别均通过</th><td>40.8%</td><td class="highlight">82.2%</td></tr></tbody></table></div>
+        <figure class="evidence-figure"><a href="assets/stroke-comparison.png"><img src="assets/stroke-comparison.png" width="1010" height="932" alt="旧版、专项 SFT、RL、OPD 与首张验收输出的同噪声对照，右侧绿色 2 在第二张通过" loading="lazy"></a>
+          <figcaption>最右列是首张验收通过的图。右侧绿色「2」第一张有闭环，程序在同一序列中选出第二张。点击查看原图。</figcaption></figure>
+        <p class="result-note">默认推理测试覆盖六种颜色与位置组合，共 24 次请求。交付的 96 张均通过笔画复验，且被独立评估器识别为「2」。专项追加 OPD 后的严格通过率为 76.0%，默认权重取表现更高的形状 RL。</p>
+      </div>
+      <div class="panel" id="panel-ablation" role="tabpanel" aria-labelledby="tab-ablation" tabindex="0">
+        <p>两个训练种子。表中「0」直立要求倾斜角 ≤10°，「2」通过同时要求可识别且笔画足量。</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">原链路与追加训练</th><th scope="col">「0」直立</th><th scope="col">「2」笔画足量</th><th scope="col">其他数字通过</th></tr></thead>
+          <tbody><tr><th scope="row">原始完整链路</th><td>47.6%</td><td>79.5%</td><td>91.9%</td></tr>
+          <tr><th scope="row">追加普通 RL</th><td>51.4%</td><td>92.7%</td><td>95.4%</td></tr>
+          <tr><th scope="row">追加形状 RL</th><td>99.3%</td><td>88.2%</td><td>94.9%</td></tr>
+          <tr><th scope="row">形状 RL，半学习率</th><td class="highlight">95.8%</td><td class="highlight">97.6%</td><td class="highlight">96.6%</td></tr></tbody></table></div>
+        <figure class="evidence-figure"><a href="assets/ablation.png"><img src="assets/ablation.png" width="984" height="1130" alt="字形消融的固定提示对照，包含原链路、形状奖励以及学习率和约束变化" loading="lazy"></a><figcaption>固定提示与噪声。未按表现挑选样本。</figcaption></figure>
+      </div>
+      <div class="panel" id="panel-baseline" role="tabpanel" aria-labelledby="tab-baseline" tabindex="0">
+        <p>每个阶段三组训练种子，共评估 2,880 张图。联合通过要求数字、颜色与左右位置正确。</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">路径</th><th scope="col">联合通过率</th></tr></thead><tbody>
+          <tr><th scope="row">SFT</th><td>83.89%</td></tr><tr><th scope="row">SFT → RL</th><td>91.01%</td></tr>
+          <tr><th scope="row">SFT → OPD</th><td class="highlight">91.74%</td></tr><tr><th scope="row">SFT → RL → OPD</th><td>91.46%</td></tr></tbody></table></div>
+        <figure class="evidence-figure"><a href="assets/baseline.png"><img src="assets/baseline.png" width="1120" height="1060" alt="初版所有检查点的同噪声生成样图" loading="lazy"></a><figcaption>训练阶段的样图对照。初版评估揭示了奖励、识别和肉眼观感之间的分歧。</figcaption></figure>
+        <details><summary>查看高奖励但识别结果有分歧的样本</summary><img src="assets/reward-disagreements.png" width="880" height="340" alt="奖励分高但独立识别器读成其他数字的图" loading="lazy"></details>
+      </div>
+    </section>
+
+    <section class="section reproduction" aria-labelledby="reproduction-title">
+      <div><p class="eyebrow">复现</p><h2 id="reproduction-title">生成自己的样例</h2><p>仓库保留各轮的源码、训练权重、配置、日志及逐图评估。项目衡量 MNIST 字形及颜色和位置遵循，最终手写字图使用 32×32 画布。</p></div>
+      <pre><code>cd experiments/03-complete-digit-two
+python -m pip install -r requirements.txt
+python verify_two.py --prompt 'green 2 on the right'</code></pre>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>项目方向与评审 <a href="https://github.com/wzihao-byte">@wzihao-byte</a></span><span><a href="https://github.com/cvdfoundation/mnist">MNIST</a><a href="https://rl-diffusion.github.io/">DDPO</a><a href="https://arxiv.org/abs/2605.15055">DiffusionOPD</a></span></footer>
+</body>
+</html>
