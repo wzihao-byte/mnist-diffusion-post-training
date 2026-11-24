@@ -1,0 +1,20 @@
+{
+  "seed": 145,
+  "diffusion_steps": 16,
+  "student_width": 16,
+  "teacher_width": 32,
+  "batch_size": 96,
+  "reader_steps": 450,
+  "base_steps": 850,
+  "sft_steps": 1050,
+  "teacher_steps": 2700,
+  "rl_steps": 180,
+  "opd_steps": 215,
+  "chain_steps": 215,
+  "rollout_batch": 32,
+  "reward_group": 4,
+  "log_interval": 50,
+  "device": "mps",
+  "torch": "2.15.0",
+  "python": "3.12.14"
+}
